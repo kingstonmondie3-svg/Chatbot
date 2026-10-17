@@ -4,7 +4,7 @@ WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@10.20.0 --activate
 COPY . .
 RUN pnpm install --frozen-lockfile
-RUN pnpm build
+RUN pnpm build && cp drizzle/dist/schema.js drizzle/schema.js
 
 FROM node:22-bookworm-slim AS runtime
 ENV NODE_ENV=production
