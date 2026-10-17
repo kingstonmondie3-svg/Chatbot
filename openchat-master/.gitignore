@@ -1,0 +1,53 @@
+node_modules
+dist
+.env
+.env.local
+.env.*.local
+*.local
+CLAUDE.local.md
+.claude/settings.local.json
+
+# tsc -b output (composite projects emit alongside source)
+*.tsbuildinfo
+*.d.ts.map
+*.js.map
+# config files compiled by tsc -b at project roots
+apps/web/vite.config.js
+apps/web/vite.config.d.ts
+apps/web/vitest.config.js
+apps/web/vitest.config.d.ts
+drizzle/schema.js
+drizzle/schema.d.ts
+drizzle.config.js
+drizzle.config.d.ts
+
+# editor
+.vscode
+.idea
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# os
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# docker volumes (local dev)
+pgdata/
+miniodata/
+
+# local file storage (STORAGE_DRIVER=local)
+.data/
+
+# logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# test coverage
+coverage/
+
+# turbo
+.turbo

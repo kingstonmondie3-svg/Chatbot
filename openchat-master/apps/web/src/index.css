@@ -1,0 +1,135 @@
+@import "katex/dist/katex.min.css";
+@import "highlight.js/styles/github-dark.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-family: theme("fontFamily.sans");
+    font-feature-settings: "cv05", "ss01";
+  }
+
+  ::selection {
+    background-color: theme("colors.brand.500");
+    color: white;
+  }
+
+  /* Visible keyboard-focus ring on interactive elements (mouse clicks stay clean) */
+  :focus-visible {
+    outline: 2px solid theme("colors.brand.500");
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Quiet, slim scrollbars that match the warm surfaces */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(120, 113, 108, 0.35) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: rgba(120, 113, 108, 0.32);
+    border: 3px solid transparent;
+    background-clip: content-box;
+    border-radius: 9999px;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(120, 113, 108, 0.55);
+  }
+}
+
+@layer components {
+  /* Streaming caret — a thin blinking bar, not a clunky pulsing block */
+  .oc-caret {
+    display: inline-block;
+    width: 2px;
+    height: 1.05em;
+    margin-left: 1px;
+    vertical-align: text-bottom;
+    background-color: currentColor;
+    opacity: 0.7;
+    border-radius: 1px;
+    animation: oc-blink 1.1s steps(2, start) infinite;
+  }
+
+  /* Subtle entrance for each message */
+  .oc-msg-enter {
+    animation: oc-fade-up 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* Readable typography for assistant markdown (no typography plugin needed) */
+  .oc-prose {
+    @apply text-[15px] leading-7 text-stone-700 dark:text-stone-200;
+  }
+  .oc-prose > :first-child { margin-top: 0; }
+  .oc-prose > :last-child { margin-bottom: 0; }
+  .oc-prose p { @apply my-3; }
+  .oc-prose ul { @apply my-3 list-disc space-y-1.5 pl-6; }
+  .oc-prose ol { @apply my-3 list-decimal space-y-1.5 pl-6; }
+  .oc-prose li { @apply leading-7; }
+  .oc-prose li > ul,
+  .oc-prose li > ol { @apply my-1.5; }
+  .oc-prose h1 { @apply mb-3 mt-6 text-2xl font-semibold; }
+  .oc-prose h2 { @apply mb-3 mt-6 text-xl font-semibold; }
+  .oc-prose h3 { @apply mb-2 mt-5 text-lg font-semibold; }
+  .oc-prose h4 { @apply mb-2 mt-4 font-semibold; }
+  .oc-prose a { @apply text-brand-600 underline-offset-2 hover:underline dark:text-brand-400; }
+  .oc-prose strong { @apply font-semibold text-stone-900 dark:text-white; }
+  .oc-prose blockquote {
+    @apply my-3 border-l-2 border-stone-300 pl-4 italic text-stone-600 dark:border-stone-600 dark:text-stone-400;
+  }
+  .oc-prose hr { @apply my-6 border-stone-200 dark:border-white/10; }
+  .oc-prose pre {
+    /* Base light text on the dark code surface so code is readable even when it
+       isn't syntax-highlighted yet — e.g. mid-stream, where the highlight pass
+       is deliberately skipped. highlight.js token colors override this once the
+       message finalizes. Without it, code rendered black-on-black. */
+    @apply my-3 overflow-x-auto rounded-b-xl bg-[#0d1117] p-4 text-sm text-[#c9d1d9];
+  }
+  .oc-prose pre:first-child,
+  .oc-prose pre.rounded-t-md { @apply rounded-t-none; }
+  .oc-prose table { @apply my-3 w-full border-collapse overflow-hidden rounded-lg text-sm; }
+  .oc-prose th,
+  .oc-prose td { @apply border border-stone-200 px-3 py-1.5 text-left dark:border-white/10; }
+  .oc-prose th { @apply bg-stone-100 font-semibold dark:bg-white/5; }
+}
+
+@keyframes oc-blink {
+  0%, 50% { opacity: 0.7; }
+  50.01%, 100% { opacity: 0; }
+}
+
+@keyframes oc-fade-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Respect users who prefer reduced motion: drop entrance/caret animations and
+   collapse transitions so nothing moves or flickers. */
+@media (prefers-reduced-motion: reduce) {
+  .oc-msg-enter {
+    animation: none;
+  }
+  .oc-caret {
+    animation: none;
+    opacity: 0.7;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
